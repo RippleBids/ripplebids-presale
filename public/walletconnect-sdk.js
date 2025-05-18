@@ -1,0 +1,1 @@
+Package version not found: @walletconnect/web3-provider@2.1.0
