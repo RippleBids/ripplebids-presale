@@ -1,16 +1,11 @@
 // modal/js/walletconnect-custom.js
 import { Client as XRPLClient } from 'xrpl';
 
-// Note: WalletConnect v1 is used here for compatibility with your package.json
-const projectId = 'cfae37059acde5a535f4fe5cc54194ea'; // Ensure this is valid for WalletConnect v2 if you upgrade
-
 async function connectWallet() {
   try {
-    // Initialize XRPL client
     const client = new XRPLClient('https://s1.ripple.com:51234');
     await client.connect();
 
-    // For testing, prompt user to input wallet address manually (bypass WalletConnect for now)
     const address = prompt('Enter your XRP wallet address (for testing):');
     if (!address || !address.startsWith('r')) {
       throw new Error('Invalid XRP address');
@@ -56,13 +51,14 @@ async function contribute() {
   }
 
   try {
-    const response = await fetch('https://<your-app>.onrender.com/api/contribute', {
+    const response = await fetch('https://ripplebids-presale.onrender.com/api/contribute', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         walletAddress,
         xrpAmount: Number(xrpAmount),
-        email: email || ''
+        email: email || '',
+        destinationAddress: 'rhzLeTCodFnkB8vfCo6Nhj8gQXkjJFZp'
       })
     });
 
@@ -83,7 +79,7 @@ async function contribute() {
 
 async function updateProgress() {
   try {
-    const response = await fetch('https://<your-app>.onrender.com/api/contributions');
+    const response = await fetch('https://ripplebids-presale.onrender.com/api/contributions');
     const data = await response.json();
     const totalXRP = data.totalXRP || 0;
     const maxXRP = 100000; // Adjust to your presale goal
@@ -100,7 +96,6 @@ function toggleMenu() {
   navbarLinks.classList.toggle('active');
 }
 
-// Expose functions globally
 window.connectWallet = connectWallet;
 window.contribute = contribute;
 window.toggleMenu = toggleMenu;
